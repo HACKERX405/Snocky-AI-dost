@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Snocky AI — Ultimate 3D</title>
+    <title>Snocky AI — Emotional Support + Focus</title>
     <style>
         * {
             margin: 0;
@@ -39,23 +39,22 @@
             flex-direction: column;
             height: 100vh;
             background: rgba(10, 10, 15, 0.25);
-            backdrop-filter: blur(2px);
         }
 
         .header {
-            padding: 1rem 2rem;
-            background: rgba(15, 15, 25, 0.5);
+            padding: 0.8rem 1.5rem;
+            background: rgba(15, 15, 25, 0.6);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
 
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #ff6b6b, #a78bfa, #3b82f6, #10b981);
             background-size: 300% 300%;
@@ -72,14 +71,14 @@
         }
 
         .logo p {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #a78bfa;
             opacity: 0.8;
         }
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }
 
         .glass-btn {
@@ -87,9 +86,8 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 2rem;
-            padding: 0.5rem 1.2rem;
-            font-size: 0.8rem;
-            font-weight: 500;
+            padding: 0.4rem 1rem;
+            font-size: 0.75rem;
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -98,22 +96,17 @@
         .glass-btn:hover {
             transform: translateY(-2px);
             border-color: rgba(167,139,250,0.5);
-            box-shadow: 0 5px 20px rgba(167,139,250,0.3);
         }
 
         .logout-btn {
             background: rgba(239,68,68,0.3);
-            border-color: rgba(239,68,68,0.3);
         }
 
-        .logout-btn:hover {
-            background: rgba(239,68,68,0.6);
-        }
-
+        /* Quote Bar */
         .quote-bar {
-            padding: 0.5rem;
+            padding: 0.4rem;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-style: italic;
             background: linear-gradient(90deg, transparent, rgba(167,139,250,0.1), transparent);
             animation: fadeInOut 8s infinite;
@@ -124,10 +117,11 @@
             50% { opacity: 1; }
         }
 
+        /* Quick Buttons */
         .quick-buttons {
-            padding: 0.8rem 1rem;
+            padding: 0.5rem 1rem;
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -138,18 +132,16 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 3rem;
-            padding: 0.5rem 1.2rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: white;
+            padding: 0.4rem 1rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            color: white;
         }
 
         .quick-btn:hover {
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-2px);
             border-color: rgba(167,139,250,0.5);
-            box-shadow: 0 10px 25px -8px rgba(167,139,250,0.4);
         }
 
         body.light-mode .quick-btn {
@@ -157,21 +149,22 @@
             color: #1a1a2e;
         }
 
+        /* Chat */
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
-            max-width: 1000px;
+            gap: 1rem;
+            max-width: 900px;
             margin: 0 auto;
             width: 100%;
         }
 
         .message {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             animation: floatIn 0.4s ease;
         }
 
@@ -190,7 +183,6 @@
         .message.user .bubble {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             border-bottom-right-radius: 0.25rem;
-            box-shadow: 0 5px 15px rgba(59,130,246,0.3);
         }
 
         .message.ai .bubble {
@@ -201,44 +193,42 @@
         }
 
         .avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: linear-gradient(135deg, #3b82f6, #a78bfa);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
             flex-shrink: 0;
-            box-shadow: 0 0 15px rgba(167,139,250,0.3);
         }
 
         .user .avatar {
             background: linear-gradient(135deg, #6b7280, #9ca3af);
-            box-shadow: none;
         }
 
         .bubble {
-            max-width: 70%;
-            padding: 0.8rem 1.2rem;
+            max-width: 75%;
+            padding: 0.7rem 1rem;
             border-radius: 1.2rem;
-            line-height: 1.5;
-            font-size: 0.95rem;
-            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 0.88rem;
         }
 
+        /* Input */
         .input-area {
-            padding: 1rem 1.5rem;
+            padding: 1rem;
             background: rgba(15,15,25,0.7);
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255,255,255,0.08);
         }
 
         .input-wrapper {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             display: flex;
-            gap: 0.8rem;
+            gap: 0.6rem;
             align-items: flex-end;
         }
 
@@ -248,13 +238,13 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 1.5rem;
-            padding: 0.8rem 1.2rem;
+            padding: 0.7rem 1rem;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             color: white;
             resize: none;
             outline: none;
-            transition: all 0.3s ease;
+            min-height: 44px;
         }
 
         textarea:focus {
@@ -266,23 +256,21 @@
             background: linear-gradient(135deg, #3b82f6, #a78bfa);
             border: none;
             border-radius: 1.5rem;
-            padding: 0.8rem 1.2rem;
+            padding: 0.7rem 1rem;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .action-btn:hover {
             transform: scale(0.98);
-            box-shadow: 0 5px 20px rgba(167,139,250,0.4);
         }
 
         .mic-btn, .speak-btn {
             border-radius: 50%;
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             padding: 0;
             display: flex;
             align-items: center;
@@ -303,11 +291,12 @@
             50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
         }
 
+        /* Suggest Card */
         .suggest-card {
             background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1));
             backdrop-filter: blur(20px);
             border-radius: 1rem;
-            padding: 1rem;
+            padding: 0.8rem;
             margin-top: 0.5rem;
             border: 1px solid rgba(16,185,129,0.4);
             animation: cardGlow 2s infinite;
@@ -322,21 +311,23 @@
             background: linear-gradient(135deg, #10b981, #059669);
             border: none;
             border-radius: 2rem;
-            padding: 0.6rem;
+            padding: 0.5rem;
             font-weight: 600;
             color: white;
             cursor: pointer;
             width: 100%;
+            margin-top: 5px;
         }
 
+        /* Typing */
         .typing-indicator {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             padding: 5px 0;
         }
         .typing-indicator span {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: #a78bfa;
             border-radius: 50%;
             animation: typingBounce 1.4s infinite;
@@ -345,30 +336,29 @@
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typingBounce {
             0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
+            30% { transform: translateY(-8px); }
         }
 
-        .chat-container::-webkit-scrollbar { width: 5px; }
-        .chat-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .chat-container::-webkit-scrollbar { width: 4px; }
+        .chat-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
         .chat-container::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 10px; }
 
         @media (max-width: 700px) {
-            .header { padding: 0.8rem 1rem; }
+            .header { padding: 0.6rem 1rem; }
             .logo h1 { font-size: 1.2rem; }
-            .quick-btn { font-size: 0.7rem; padding: 0.3rem 0.9rem; }
-            .bubble { max-width: 85%; font-size: 0.85rem; }
-            .glass-btn { padding: 0.3rem 0.8rem; font-size: 0.7rem; }
+            .quick-btn { font-size: 0.65rem; padding: 0.3rem 0.7rem; }
+            .bubble { max-width: 85%; font-size: 0.82rem; }
         }
     </style>
 </head>
 <body>
     <div id="canvas-container"></div>
 
-    <div class="app" id="mainApp">
+    <div class="app">
         <div class="header">
             <div class="logo">
                 <h1>⚡ SNOCKY AI</h1>
-                <p>next generation intelligence</p>
+                <p>your emotional support • focus companion</p>
             </div>
             <div class="header-actions">
                 <button class="glass-btn" id="themeToggleBtn">🎨 Theme</button>
@@ -377,27 +367,27 @@
             </div>
         </div>
 
-        <div class="quote-bar" id="quoteBar">✨ "The only limit is your imagination. Break it." — Snocky</div>
+        <div class="quote-bar" id="quoteBar">✨ "You are not alone. I'm here for you." — Snocky</div>
 
         <div class="quick-buttons">
-            <button class="quick-btn" data-problem="phone addiction ho gayi">📱 Phone Addiction</button>
-            <button class="quick-btn" data-problem="padhai mein focus nahi aa raha">📚 Study Focus</button>
-            <button class="quick-btn" data-problem="bahut stress ho raha hai">😰 Stress Relief</button>
-            <button class="quick-btn" data-problem="bhook lagi hai jaldi khana hai">🍔 Quick Food</button>
-            <button class="quick-btn" data-problem="procrastinate kar raha hoon">⏳ Procrastination</button>
-            <button class="quick-btn" data-problem="kuch interesting bata">🎯 Surprise Me</button>
+            <button class="quick-btn" data-problem="feeling anxious">😰 Anxiety</button>
+            <button class="quick-btn" data-problem="feeling stressed">😫 Stress</button>
+            <button class="quick-btn" data-problem="phone addiction">📱 Phone Addiction</button>
+            <button class="quick-btn" data-problem="need motivation">💪 Motivation</button>
+            <button class="quick-btn" data-problem="can't focus">🎯 Focus</button>
+            <button class="quick-btn" data-problem="feeling lonely">💙 Lonely</button>
         </div>
 
         <div class="chat-container" id="chatContainer">
             <div class="message ai">
                 <div class="avatar">⚡</div>
-                <div class="bubble">✨ Welcome to the future, bhai! Main Snocky — tera AI dost. Problem bata, solution dunga. Voice se bol, main jawab dunga! 🚀</div>
+                <div class="bubble">Hey bhai! Main Snocky — tera emotional support companion. Tujhe stress hai, anxiety hai, phone addiction hai? Main sun raha hoon. Bata, kya help chahiye? 🤝💙</div>
             </div>
         </div>
 
         <div class="input-area">
             <div class="input-wrapper">
-                <textarea id="userInput" placeholder="Type something magical..." rows="1"></textarea>
+                <textarea id="userInput" placeholder="Type how you're feeling..." rows="1"></textarea>
                 <button id="speakBtn" class="action-btn speak-btn">🔊</button>
                 <button id="micBtn" class="action-btn mic-btn">🎤</button>
                 <button id="sendBtn" class="action-btn">✨ Send</button>
@@ -418,7 +408,7 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // ============ PEHLE JAISA 3D BACKGROUND (SIMPLE, SMOOTH) ============
+        // 3D Background
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0f0f13);
@@ -449,7 +439,7 @@
         wireframe.scale.set(1.2, 1.2, 1.2);
         group.add(wireframe);
         
-        const particleCount = 1500;
+        const particleCount = 1200;
         const particlesGeo = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount; i++) {
@@ -495,18 +485,17 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // ============ FULLY WORKING CHAT SYSTEM ============
+        // ============ EMOTIONAL SUPPORT AI ============
         
         const quotes = [
-            "✨ Believe you can and you're halfway there.",
-            "🎯 Focus on the goal, not the obstacle.",
-            "💪 Strength comes from overcoming challenges.",
-            "🧠 The expert was once a beginner.",
-            "⚡ Don't wait for opportunity. Create it.",
-            "🌟 You didn't come this far to only come this far.",
-            "🔋 Rest if you must, but don't you quit.",
-            "🎓 Education is the passport to the future.",
-            "🚀 The only way to do great work is to love what you do."
+            "💙 You matter more than you know.",
+            "🧘 Take a deep breath. You've got this.",
+            "🌟 Even the darkest night will end and the sun will rise.",
+            "💪 You are stronger than your struggles.",
+            "🌱 Small steps every day lead to big changes.",
+            "🎯 Focus on what you can control, let go of the rest.",
+            "🤝 You are not alone. I'm here for you.",
+            "💡 Your potential is endless. Keep going."
         ];
         
         function setRandomQuote() {
@@ -515,7 +504,7 @@
         setRandomQuote();
         setInterval(setRandomQuote, 30000);
         
-        // Theme Toggle
+        // Theme
         let isDarkMode = true;
         document.getElementById('themeToggleBtn').addEventListener('click', () => {
             isDarkMode = !isDarkMode;
@@ -524,13 +513,12 @@
         
         // Speech
         let speechSynthesis = window.speechSynthesis;
-        let currentUtterance = null;
         function speakText(text) {
-            if (currentUtterance) speechSynthesis.cancel();
-            currentUtterance = new SpeechSynthesisUtterance(text);
-            currentUtterance.lang = 'hi-IN';
-            currentUtterance.rate = 0.9;
-            speechSynthesis.speak(currentUtterance);
+            if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'hi-IN';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
         }
         
         function vibrate() {
@@ -545,12 +533,10 @@
         const sendBtn = document.getElementById('sendBtn');
         const micBtn = document.getElementById('micBtn');
         const speakBtn = document.getElementById('speakBtn');
-        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
         
         let isApkSuggested = false;
         let conversationHistory = JSON.parse(localStorage.getItem('snockyChatHistory')) || [
-            { role: "system", content: "Tu Snocky hai — ek friendly, energetic, next-gen AI dost. Hinglish mein baat kar. Short, powerful, helpful responses. Be creative and inspiring." }
+            { role: "system", content: "Tu Snocky hai — ek friendly, empathetic, emotional support AI dost. Hinglish mein baat kar. Tera kaam hai user ki emotional needs samajhna, validation dena, aur practical solutions suggest karna. Jab user stress, anxiety, phone addiction, distraction ki baat kare toh 'ApkClaw' suggest kar. Always be kind, non-judgmental, and supportive. Use emojis like 💙, 🤝, 🧘, 💪 to show empathy." }
         ];
         
         function addMessageToUI(role, text) {
@@ -577,7 +563,7 @@
                 }
             }
             if (!hasUserMessage) {
-                addMessageToUI('ai', '✨ Welcome to the future, bhai! Main Snocky — tera AI dost. Problem bata, solution dunga. Voice se bol, main jawab dunga! 🚀');
+                addMessageToUI('ai', 'Hey bhai! Main Snocky — tera emotional support companion. Tujhe stress hai, anxiety hai, phone addiction hai? Main sun raha hoon. Bata, kya help chahiye? 🤝💙');
             }
         }
         
@@ -586,7 +572,7 @@
             const cardDiv = document.createElement('div');
             cardDiv.className = 'suggest-card';
             cardDiv.id = 'apkCard';
-            cardDiv.innerHTML = `<h4>📱 Snocky Suggests — ApkClaw</h4><p>Yeh app phone lock karega, distractions hatayega, focus mode dega. Bilkul free hai.</p><button class="apk-btn" id="downloadApkBtn">⬇️ DOWNLOAD ApkClaw (Direct)</button>`;
+            cardDiv.innerHTML = `<h4 style="color:#10b981;">📱 Focus Mode — ApkClaw</h4><p style="font-size:0.8rem;">Distraction-free experience. Lock phone, block notifications, stay focused.</p><button class="apk-btn" id="downloadApkBtn">⬇️ Download ApkClaw (Free)</button>`;
             chatContainerDiv.appendChild(cardDiv);
             document.getElementById('downloadApkBtn')?.addEventListener('click', () => window.open(APK_URL, '_blank'));
             isApkSuggested = true;
@@ -605,9 +591,10 @@
             document.getElementById('typingIndicator')?.remove();
         }
         
-        function isPhoneAddictionQuery(msg) {
+        // Detect emotional state and distraction
+        function needsApkClaw(msg) {
             const lower = msg.toLowerCase();
-            const keywords = ['phone addiction', 'phone ki lat', 'distraction', 'screen time', 'mobile addiction', 'phone se chutkara'];
+            const keywords = ['phone addiction', 'distraction', 'screen time', 'phone band', 'focus nahi', 'mobile addiction', 'phone ki lat', 'reels', 'scroll'];
             return keywords.some(k => lower.includes(k));
         }
         
@@ -623,26 +610,28 @@
             saveChatHistory();
             showTyping();
             
-            const shouldShowApk = isPhoneAddictionQuery(userMessage);
+            const shouldShowApk = needsApkClaw(userMessage);
             
             try {
                 const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
-                    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: conversationHistory.slice(-10), temperature: 0.9, max_tokens: 250 })
+                    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: conversationHistory.slice(-10), temperature: 0.85, max_tokens: 300 })
                 });
                 hideTyping();
                 const data = await response.json();
-                let reply = data.choices?.[0]?.message?.content || "❌ Error, try again";
+                let reply = data.choices?.[0]?.message?.content || "I'm here for you. Can you tell me more about how you're feeling? 💙";
+                
                 conversationHistory.push({ role: "assistant", content: reply });
                 saveChatHistory();
                 addMessageToUI('ai', reply);
+                
                 if (shouldShowApk && !isApkSuggested) {
-                    setTimeout(() => addApkSuggestCard(), 500);
+                    setTimeout(() => addApkSuggestCard(), 800);
                 }
             } catch (error) {
                 hideTyping();
-                addMessageToUI('ai', '❌ Internet check kar bhai');
+                addMessageToUI('ai', '❌ Internet check kar bhai. Main yahan hoon, phir se try kar 💙');
             }
         }
         
@@ -656,15 +645,15 @@
             }
         });
         
-        clearHistoryBtn.addEventListener('click', () => {
-            conversationHistory = [{ role: "system", content: "Tu Snocky hai — ek friendly, energetic, next-gen AI dost." }];
+        document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+            conversationHistory = [{ role: "system", content: conversationHistory[0].content }];
             isApkSuggested = false;
             saveChatHistory();
             chatContainerDiv.innerHTML = '';
-            addMessageToUI('ai', '✨ Chat history cleared! Fresh start. Let\'s do this! 💪');
+            addMessageToUI('ai', 'Chat history cleared! Main yahan hoon, fresh start karte hain. Bata, kaisa feel kar raha hai? 💙');
         });
         
-        logoutBtn.addEventListener('click', () => {
+        document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('snockyChatHistory');
             localStorage.removeItem('snockyUser');
             window.location.reload();
@@ -678,11 +667,8 @@
         
         speakBtn.addEventListener('click', () => {
             const lastMsg = Array.from(chatContainerDiv.querySelectorAll('.message.ai .bubble')).pop();
-            if (lastMsg) {
-                speakText(lastMsg.innerText);
-            } else {
-                speakText("Koi message nahi hai bhai, kuch pucho pehle");
-            }
+            if (lastMsg) speakText(lastMsg.innerText);
+            else speakText("Kuch pucho bhai, main sun raha hoon 💙");
         });
         
         // Voice Input
@@ -703,15 +689,11 @@
                 micBtn.classList.remove('listening');
                 isListening = false;
             };
-            recognition.onerror = () => {
-                micBtn.classList.remove('listening');
-                isListening = false;
-            };
         }
         
         micBtn.addEventListener('click', () => {
             if (!recognition) {
-                addMessageToUI('ai', '❌ Voice support nahi. Chrome use kar.');
+                addMessageToUI('ai', '❌ Voice support nahi. Chrome use kar bhai.');
                 return;
             }
             if (isListening) {
@@ -727,7 +709,7 @@
         
         loadMessagesFromHistory();
         
-        console.log('🔥 Snocky AI — Pehle jaisa 3D + Next Level Layout!');
+        console.log('🔥 Snocky AI — Emotional Support + Focus + ApkClaw Ready!');
     </script>
 </body>
 </html>
