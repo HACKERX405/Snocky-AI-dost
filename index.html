@@ -2,13 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Snocky AI — Emotional Support + Focus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#0f0f13">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Snocky AI — Mobile Optimized</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        /* Mobile specific base */
+        @media (max-width: 480px) {
+            html {
+                font-size: 16px;
+            }
         }
 
         body {
@@ -41,8 +57,9 @@
             background: rgba(10, 10, 15, 0.25);
         }
 
+        /* Header */
         .header {
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1rem;
             background: rgba(15, 15, 25, 0.6);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -50,11 +67,11 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             background: linear-gradient(135deg, #ff6b6b, #a78bfa, #3b82f6, #10b981);
             background-size: 300% 300%;
@@ -71,14 +88,13 @@
         }
 
         .logo p {
-            font-size: 0.65rem;
+            font-size: 0.55rem;
             color: #a78bfa;
-            opacity: 0.8;
         }
 
         .header-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .glass-btn {
@@ -86,92 +102,74 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 2rem;
-            padding: 0.4rem 1rem;
-            font-size: 0.75rem;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.65rem;
             color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .glass-btn:hover {
-            transform: translateY(-2px);
-            border-color: rgba(167,139,250,0.5);
-        }
-
-        .logout-btn {
-            background: rgba(239,68,68,0.3);
         }
 
         /* Quote Bar */
         .quote-bar {
-            padding: 0.4rem;
+            padding: 0.35rem;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-style: italic;
             background: linear-gradient(90deg, transparent, rgba(167,139,250,0.1), transparent);
-            animation: fadeInOut 8s infinite;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
         }
 
         /* Quick Buttons */
         .quick-buttons {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .quick-buttons::-webkit-scrollbar {
+            display: none;
         }
 
         .quick-btn {
             background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(167,139,250,0.1));
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 3rem;
-            padding: 0.4rem 1rem;
-            font-size: 0.75rem;
+            border-radius: 2rem;
+            padding: 0.4rem 0.9rem;
+            font-size: 0.7rem;
+            white-space: nowrap;
             cursor: pointer;
-            transition: all 0.3s ease;
             color: white;
+            flex-shrink: 0;
         }
 
-        .quick-btn:hover {
-            transform: translateY(-2px);
-            border-color: rgba(167,139,250,0.5);
+        .quick-btn:active {
+            transform: scale(0.95);
         }
 
-        body.light-mode .quick-btn {
-            background: rgba(0,0,0,0.05);
-            color: #1a1a2e;
-        }
-
-        /* Chat */
+        /* Chat Container */
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 0.8rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            max-width: 900px;
-            margin: 0 auto;
+            gap: 0.8rem;
             width: 100%;
         }
 
         .message {
             display: flex;
-            gap: 0.8rem;
-            animation: floatIn 0.4s ease;
+            gap: 0.7rem;
+            animation: floatIn 0.3s ease;
         }
 
         @keyframes floatIn {
             from {
                 opacity: 0;
-                transform: translateX(-20px) scale(0.9);
+                transform: translateX(-15px) scale(0.95);
             }
             to {
                 opacity: 1;
@@ -179,22 +177,25 @@
             }
         }
 
-        .message.user { justify-content: flex-end; }
+        .message.user {
+            justify-content: flex-end;
+        }
+
         .message.user .bubble {
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border-bottom-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.2rem;
         }
 
         .message.ai .bubble {
-            background: rgba(30,30,45,0.8);
+            background: rgba(30, 30, 45, 0.85);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-bottom-left-radius: 0.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom-left-radius: 0.2rem;
         }
 
         .avatar {
-            width: 32px;
-            height: 32px;
+            width: 2.2rem;
+            height: 2.2rem;
             border-radius: 50%;
             background: linear-gradient(135deg, #3b82f6, #a78bfa);
             display: flex;
@@ -211,70 +212,117 @@
         .bubble {
             max-width: 75%;
             padding: 0.7rem 1rem;
-            border-radius: 1.2rem;
+            border-radius: 1rem;
             line-height: 1.4;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
+            word-wrap: break-word;
         }
 
-        /* Input */
+        @media (max-width: 480px) {
+            .bubble {
+                max-width: 85%;
+                font-size: 0.88rem;
+                padding: 0.7rem 1rem;
+            }
+            .avatar {
+                width: 2.2rem;
+                height: 2.2rem;
+            }
+        }
+
+        /* ========== INPUT AREA - FIXED BIGGER ON MOBILE ========== */
         .input-area {
-            padding: 1rem;
-            background: rgba(15,15,25,0.7);
+            padding: 0.7rem;
+            background: rgba(15, 15, 25, 0.9);
             backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: max(0.7rem, env(safe-area-inset-bottom, 0.7rem));
         }
 
         .input-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
+            width: 100%;
             display: flex;
             gap: 0.6rem;
-            align-items: flex-end;
+            align-items: center;
         }
 
+        /* Mobile Textarea - BIG and COMFORTABLE */
         textarea {
             flex: 1;
-            background: rgba(30,30,45,0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1.5rem;
-            padding: 0.7rem 1rem;
+            background: rgba(30, 30, 45, 0.95);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 2rem;
+            padding: 0.9rem 1.2rem;
             font-family: inherit;
-            font-size: 0.88rem;
+            font-size: 1rem;
             color: white;
             resize: none;
             outline: none;
-            min-height: 44px;
+            min-height: 3rem;
+            line-height: 1.3;
+        }
+
+        /* Mobile specific: bigger input */
+        @media (max-width: 480px) {
+            textarea {
+                padding: 0.9rem 1rem;
+                font-size: 1rem;
+                min-height: 3.2rem;
+                border-radius: 2rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            textarea {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.95rem;
+            }
         }
 
         textarea:focus {
             border-color: #a78bfa;
-            box-shadow: 0 0 0 3px rgba(167,139,250,0.2);
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
         }
 
+        /* Action Buttons - Bigger touch targets */
         .action-btn {
             background: linear-gradient(135deg, #3b82f6, #a78bfa);
             border: none;
-            border-radius: 1.5rem;
-            padding: 0.7rem 1rem;
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: white;
             cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 3rem;
         }
 
-        .action-btn:hover {
-            transform: scale(0.98);
+        .action-btn:active {
+            transform: scale(0.96);
         }
 
+        /* Icon buttons */
         .mic-btn, .speak-btn {
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
+            width: 3.2rem;
+            height: 3.2rem;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-width: 3rem;
+        }
+
+        @media (max-width: 480px) {
+            .action-btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+            .mic-btn, .speak-btn {
+                width: 3rem;
+                height: 3rem;
+            }
         }
 
         .speak-btn {
@@ -288,38 +336,33 @@
 
         @keyframes pulseMic {
             0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 #ef4444; }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
         }
 
         /* Suggest Card */
         .suggest-card {
-            background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1));
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
             backdrop-filter: blur(20px);
             border-radius: 1rem;
-            padding: 0.8rem;
+            padding: 0.7rem;
             margin-top: 0.5rem;
-            border: 1px solid rgba(16,185,129,0.4);
-            animation: cardGlow 2s infinite;
-        }
-
-        @keyframes cardGlow {
-            0%, 100% { box-shadow: 0 0 5px rgba(16,185,129,0.3); }
-            50% { box-shadow: 0 0 20px rgba(16,185,129,0.5); }
+            border: 1px solid rgba(16, 185, 129, 0.4);
         }
 
         .apk-btn {
             background: linear-gradient(135deg, #10b981, #059669);
             border: none;
             border-radius: 2rem;
-            padding: 0.5rem;
+            padding: 0.6rem;
             font-weight: 600;
+            font-size: 0.8rem;
             color: white;
             cursor: pointer;
             width: 100%;
             margin-top: 5px;
         }
 
-        /* Typing */
+        /* Typing Indicator */
         .typing-indicator {
             display: flex;
             gap: 4px;
@@ -339,15 +382,41 @@
             30% { transform: translateY(-8px); }
         }
 
-        .chat-container::-webkit-scrollbar { width: 4px; }
-        .chat-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        .chat-container::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 10px; }
+        /* Scrollbar */
+        .chat-container::-webkit-scrollbar {
+            width: 3px;
+        }
+        .chat-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #a78bfa;
+            border-radius: 10px;
+        }
 
-        @media (max-width: 700px) {
-            .header { padding: 0.6rem 1rem; }
-            .logo h1 { font-size: 1.2rem; }
-            .quick-btn { font-size: 0.65rem; padding: 0.3rem 0.7rem; }
-            .bubble { max-width: 85%; font-size: 0.82rem; }
+        body.light-mode .bubble,
+        body.light-mode .ai .bubble {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a1a2e;
+        }
+        body.light-mode textarea {
+            background: white;
+            color: #1a1a2e;
+            border-color: #ddd;
+        }
+        body.light-mode .input-area,
+        body.light-mode .header {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (min-width: 1024px) {
+            .chat-container {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            .bubble {
+                max-width: 70%;
+            }
         }
     </style>
 </head>
@@ -358,7 +427,7 @@
         <div class="header">
             <div class="logo">
                 <h1>⚡ SNOCKY AI</h1>
-                <p>your emotional support • focus companion</p>
+                <p>emotional support • focus companion</p>
             </div>
             <div class="header-actions">
                 <button class="glass-btn" id="themeToggleBtn">🎨 Theme</button>
@@ -381,16 +450,16 @@
         <div class="chat-container" id="chatContainer">
             <div class="message ai">
                 <div class="avatar">⚡</div>
-                <div class="bubble">Hey bhai! Main Snocky — tera emotional support companion. Tujhe stress hai, anxiety hai, phone addiction hai? Main sun raha hoon. Bata, kya help chahiye? 🤝💙</div>
+                <div class="bubble">Hey bhai! Main Snocky — tera emotional support companion. Stress, anxiety, phone addiction? Main sun raha hoon. Bata, kya help chahiye? 🤝💙</div>
             </div>
         </div>
 
         <div class="input-area">
             <div class="input-wrapper">
-                <textarea id="userInput" placeholder="Type how you're feeling..." rows="1"></textarea>
+                <textarea id="userInput" placeholder="Type here..." rows="1"></textarea>
                 <button id="speakBtn" class="action-btn speak-btn">🔊</button>
                 <button id="micBtn" class="action-btn mic-btn">🎤</button>
-                <button id="sendBtn" class="action-btn">✨ Send</button>
+                <button id="sendBtn" class="action-btn">Send</button>
             </div>
         </div>
     </div>
@@ -408,7 +477,7 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // 3D Background
+        // 3D Background (optimized for mobile)
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0f0f13);
@@ -418,11 +487,10 @@
         
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit for mobile
         container.appendChild(renderer.domElement);
         
         const group = new THREE.Group();
-        
         const geo = new THREE.IcosahedronGeometry(0.8, 0);
         const mat = new THREE.MeshStandardMaterial({
             color: 0xa78bfa,
@@ -439,7 +507,8 @@
         wireframe.scale.set(1.2, 1.2, 1.2);
         group.add(wireframe);
         
-        const particleCount = 1200;
+        // Reduced particles for mobile performance
+        const particleCount = 800;
         const particlesGeo = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount; i++) {
@@ -466,14 +535,14 @@
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.8;
+        controls.autoRotateSpeed = 0.6;
         controls.enableZoom = false;
         controls.enablePan = false;
         
         function animate() {
             requestAnimationFrame(animate);
-            group.rotation.y += 0.003;
-            group.rotation.x += 0.002;
+            group.rotation.y += 0.002;
+            group.rotation.x += 0.001;
             controls.update();
             renderer.render(scene, camera);
         }
@@ -485,17 +554,15 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // ============ EMOTIONAL SUPPORT AI ============
+        // ============ CHAT SYSTEM ============
         
         const quotes = [
             "💙 You matter more than you know.",
             "🧘 Take a deep breath. You've got this.",
-            "🌟 Even the darkest night will end and the sun will rise.",
+            "🌟 Even the darkest night will end.",
             "💪 You are stronger than your struggles.",
             "🌱 Small steps every day lead to big changes.",
-            "🎯 Focus on what you can control, let go of the rest.",
-            "🤝 You are not alone. I'm here for you.",
-            "💡 Your potential is endless. Keep going."
+            "🤝 You are not alone. I'm here for you."
         ];
         
         function setRandomQuote() {
@@ -504,15 +571,12 @@
         setRandomQuote();
         setInterval(setRandomQuote, 30000);
         
-        // Theme
         let isDarkMode = true;
         document.getElementById('themeToggleBtn').addEventListener('click', () => {
             isDarkMode = !isDarkMode;
             document.body.classList.toggle('light-mode', !isDarkMode);
         });
         
-        // Speech
-        let speechSynthesis = window.speechSynthesis;
         function speakText(text) {
             if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
@@ -536,7 +600,7 @@
         
         let isApkSuggested = false;
         let conversationHistory = JSON.parse(localStorage.getItem('snockyChatHistory')) || [
-            { role: "system", content: "Tu Snocky hai — ek friendly, empathetic, emotional support AI dost. Hinglish mein baat kar. Tera kaam hai user ki emotional needs samajhna, validation dena, aur practical solutions suggest karna. Jab user stress, anxiety, phone addiction, distraction ki baat kare toh 'ApkClaw' suggest kar. Always be kind, non-judgmental, and supportive. Use emojis like 💙, 🤝, 🧘, 💪 to show empathy." }
+            { role: "system", content: "Tu Snocky hai — friendly, empathetic, emotional support AI. Hinglish mein baat kar. Use emojis 💙🤝" }
         ];
         
         function addMessageToUI(role, text) {
@@ -563,7 +627,7 @@
                 }
             }
             if (!hasUserMessage) {
-                addMessageToUI('ai', 'Hey bhai! Main Snocky — tera emotional support companion. Tujhe stress hai, anxiety hai, phone addiction hai? Main sun raha hoon. Bata, kya help chahiye? 🤝💙');
+                addMessageToUI('ai', 'Hey bhai! Main Snocky — tera emotional support companion. Stress, anxiety, phone addiction? Main sun raha hoon. Bata, kya help chahiye? 🤝💙');
             }
         }
         
@@ -572,7 +636,7 @@
             const cardDiv = document.createElement('div');
             cardDiv.className = 'suggest-card';
             cardDiv.id = 'apkCard';
-            cardDiv.innerHTML = `<h4 style="color:#10b981;">📱 Focus Mode — ApkClaw</h4><p style="font-size:0.8rem;">Distraction-free experience. Lock phone, block notifications, stay focused.</p><button class="apk-btn" id="downloadApkBtn">⬇️ Download ApkClaw (Free)</button>`;
+            cardDiv.innerHTML = `<h4 style="color:#10b981;">📱 Focus Mode — ApkClaw</h4><p style="font-size:0.75rem;">Lock phone, block distractions. Free.</p><button class="apk-btn" id="downloadApkBtn">⬇️ Download ApkClaw</button>`;
             chatContainerDiv.appendChild(cardDiv);
             document.getElementById('downloadApkBtn')?.addEventListener('click', () => window.open(APK_URL, '_blank'));
             isApkSuggested = true;
@@ -591,10 +655,9 @@
             document.getElementById('typingIndicator')?.remove();
         }
         
-        // Detect emotional state and distraction
         function needsApkClaw(msg) {
             const lower = msg.toLowerCase();
-            const keywords = ['phone addiction', 'distraction', 'screen time', 'phone band', 'focus nahi', 'mobile addiction', 'phone ki lat', 'reels', 'scroll'];
+            const keywords = ['phone addiction', 'distraction', 'screen time', 'phone band', 'focus nahi', 'mobile addiction'];
             return keywords.some(k => lower.includes(k));
         }
         
@@ -605,6 +668,7 @@
             vibrate();
             addMessageToUI('user', userMessage);
             textarea.value = '';
+            textarea.style.height = 'auto';
             
             conversationHistory.push({ role: "user", content: userMessage });
             saveChatHistory();
@@ -620,7 +684,7 @@
                 });
                 hideTyping();
                 const data = await response.json();
-                let reply = data.choices?.[0]?.message?.content || "I'm here for you. Can you tell me more about how you're feeling? 💙";
+                let reply = data.choices?.[0]?.message?.content || "I'm here for you. Tell me more 💙";
                 
                 conversationHistory.push({ role: "assistant", content: reply });
                 saveChatHistory();
@@ -631,11 +695,16 @@
                 }
             } catch (error) {
                 hideTyping();
-                addMessageToUI('ai', '❌ Internet check kar bhai. Main yahan hoon, phir se try kar 💙');
+                addMessageToUI('ai', '❌ Internet check kar bhai. Main yahan hoon 💙');
             }
         }
         
-        // Event Listeners
+        // Auto-resize textarea
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+        
         sendBtn.addEventListener('click', () => sendMessage());
         
         textarea.addEventListener('keypress', (e) => {
@@ -650,12 +719,11 @@
             isApkSuggested = false;
             saveChatHistory();
             chatContainerDiv.innerHTML = '';
-            addMessageToUI('ai', 'Chat history cleared! Main yahan hoon, fresh start karte hain. Bata, kaisa feel kar raha hai? 💙');
+            addMessageToUI('ai', 'Chat cleared! Fresh start. Bata, kaisa feel kar raha hai? 💙');
         });
         
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('snockyChatHistory');
-            localStorage.removeItem('snockyUser');
             window.location.reload();
         });
         
@@ -677,8 +745,6 @@
         if ('webkitSpeechRecognition' in window) {
             recognition = new webkitSpeechRecognition();
             recognition.lang = 'hi-IN';
-            recognition.continuous = false;
-            recognition.interimResults = false;
             recognition.onresult = (event) => {
                 textarea.value = event.results[0][0].transcript;
                 micBtn.classList.remove('listening');
@@ -709,7 +775,7 @@
         
         loadMessagesFromHistory();
         
-        console.log('🔥 Snocky AI — Emotional Support + Focus + ApkClaw Ready!');
+        console.log('🔥 Snocky AI — Perfect Mobile Optimization!');
     </script>
 </body>
 </html>
