@@ -361,10 +361,8 @@
             </div>
         </div>
 
-        <!-- Quote Bar -->
         <div class="quote-bar" id="quoteBar">✨ "Believe you can and you're halfway there." — Theodore Roosevelt</div>
 
-        <!-- Quick Problem Buttons -->
         <div class="quick-buttons" id="quickButtons">
             <button class="quick-btn" data-problem="phone addiction ho gayi">📱 Phone Addiction</button>
             <button class="quick-btn" data-problem="padhai mein focus nahi aa raha">📚 Study Focus</button>
@@ -403,7 +401,7 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // 3D Background (simplified for performance)
+        // 3D Background
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0f0f13);
@@ -466,7 +464,6 @@
 
         // ============ PREMIUM FEATURES ============
         
-        // Quotes Array
         const quotes = [
             "✨ Believe you can and you're halfway there. — Theodore Roosevelt",
             "📚 The expert in anything was once a beginner.",
@@ -480,14 +477,12 @@
             "🎓 Education is the most powerful weapon.",
         ];
         
-        // Set random quote
         function setRandomQuote() {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('quoteBar').innerHTML = `✨ "${randomQuote}"`;
         }
         setRandomQuote();
         
-        // Theme Toggle
         let isDarkMode = true;
         document.getElementById('themeToggleBtn').addEventListener('click', () => {
             isDarkMode = !isDarkMode;
@@ -505,30 +500,21 @@
         let currentUtterance = null;
         
         function speakText(text) {
-            if (currentUtterance) {
-                speechSynthesis.cancel();
-            }
+            if (currentUtterance) speechSynthesis.cancel();
             currentUtterance = new SpeechSynthesisUtterance(text);
             currentUtterance.lang = 'hi-IN';
             currentUtterance.rate = 0.9;
-            currentUtterance.pitch = 1;
             speechSynthesis.speak(currentUtterance);
         }
         
-        // Haptic feedback (vibration)
         function vibrate() {
-            if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(50);
-            }
+            if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(50);
         }
         
-        // Typing sound (simple beep using Web Audio)
         let audioCtx = null;
         function playTypingSound() {
             try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
                 oscillator.connect(gainNode);
@@ -538,10 +524,10 @@
                 oscillator.start();
                 gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.1);
                 oscillator.stop(audioCtx.currentTime + 0.1);
-            } catch(e) { console.log('Audio not supported'); }
+            } catch(e) {}
         }
         
-        // ============ CHAT SYSTEM WITH HISTORY ============
+        // ============ CHAT SYSTEM ============
         const GROQ_API_KEY = "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";
         const APK_URL = "https://static.apkclaw.net/apk/ApkClaw_v0.0.1.apk";
         
@@ -552,13 +538,10 @@
         const speakBtn = document.getElementById('speakBtn');
         
         let isApkSuggested = false;
-        
-        // Load chat history from localStorage
         let conversationHistory = JSON.parse(localStorage.getItem('snockyChatHistory')) || [
-            { role: "system", content: "Tu Snocky hai — ek friendly, real dost. Hinglish mein baat kar. Short aur helpful jawab de. Agar user distraction, phone addiction, focus, padhai ki baat kare toh 'ApkClaw' suggest kar." }
+            { role: "system", content: "Tu Snocky hai — ek friendly, real dost. Hinglish mein baat kar. Short aur helpful jawab de. Jab user specifically 'phone addiction' ya 'distraction' ki baat kare tabhi 'ApkClaw' suggest kar warna mat kar." }
         ];
         
-        // Load messages to UI
         function loadMessagesFromHistory() {
             chatContainerDiv.innerHTML = '';
             let hasUserMessage = false;
@@ -588,13 +571,14 @@
         }
         
         function addApkSuggestCard() {
-            if (document.getElementById('apkCard')) return;
+            if (document.getElementById('apkCard') || isApkSuggested) return;
             const cardDiv = document.createElement('div');
             cardDiv.className = 'suggest-card';
             cardDiv.id = 'apkCard';
             cardDiv.innerHTML = `<h4>📱 Snocky Suggests — ApkClaw</h4><p>Yeh app phone lock karega, distractions hatayega, focus mode dega. Bilkul free hai.</p><button class="apk-btn" id="downloadApkBtn">⬇️ DOWNLOAD ApkClaw (Direct)</button>`;
             chatContainerDiv.appendChild(cardDiv);
             document.getElementById('downloadApkBtn')?.addEventListener('click', () => window.open(APK_URL, '_blank'));
+            isApkSuggested = true;
         }
         
         function showTyping() {
@@ -609,6 +593,13 @@
         
         function hideTyping() { document.getElementById('typingIndicator')?.remove(); }
         
+        // Check if user is asking about phone addiction specifically
+        function isPhoneAddictionQuery(msg) {
+            const lower = msg.toLowerCase();
+            const addictionKeywords = ['phone addiction', 'phone ki lat', 'phone ki aadat', 'distraction', 'screen time', 'mobile addiction', 'phone se chutkara'];
+            return addictionKeywords.some(keyword => lower.includes(keyword));
+        }
+        
         async function sendMessage(messageText = null) {
             const userMessage = messageText || textarea.value.trim();
             if (!userMessage) return;
@@ -622,11 +613,8 @@
             
             showTyping();
             
-            const isDistraction = userMessage.toLowerCase().includes('distraction') || 
-                                userMessage.toLowerCase().includes('focus') || 
-                                userMessage.toLowerCase().includes('phone') ||
-                                userMessage.toLowerCase().includes('lock') || 
-                                userMessage.toLowerCase().includes('padhai');
+            // Only show ApkClaw if user is specifically asking about phone addiction
+            const shouldShowApk = isPhoneAddictionQuery(userMessage);
             
             try {
                 const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -637,11 +625,12 @@
                 hideTyping();
                 const data = await response.json();
                 let reply = data.choices?.[0]?.message?.content || "❌ Error, try again";
+                
                 conversationHistory.push({ role: "assistant", content: reply });
                 saveChatHistory();
                 addMessageToUI('ai', reply);
                 
-                if (isDistraction && !document.getElementById('apkCard')) {
+                if (shouldShowApk && !isApkSuggested) {
                     setTimeout(() => addApkSuggestCard(), 500);
                 }
             } catch (error) {
@@ -650,34 +639,27 @@
             }
         }
         
-        // Clear history
         document.getElementById('clearHistoryBtn').addEventListener('click', () => {
             conversationHistory = [{ role: "system", content: "Tu Snocky hai — ek friendly, real dost. Hinglish mein baat kar." }];
+            isApkSuggested = false;
             saveChatHistory();
             chatContainerDiv.innerHTML = '';
             addMessageToUI('ai', 'Chat history clear ho gayi! Ab nayi baat shuru karte hain 💪');
         });
         
-        // Quick buttons
         document.querySelectorAll('.quick-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const problem = btn.getAttribute('data-problem');
-                textarea.value = problem;
                 sendMessage(problem);
             });
         });
         
-        // Speak button - read last AI message
         speakBtn.addEventListener('click', () => {
             const lastAIMessage = Array.from(chatContainerDiv.querySelectorAll('.message.ai .bubble')).pop();
-            if (lastAIMessage) {
-                speakText(lastAIMessage.innerText);
-            } else {
-                speakText("Koi message nahi hai bhai, kuch pucho pehle");
-            }
+            if (lastAIMessage) speakText(lastAIMessage.innerText);
+            else speakText("Koi message nahi hai bhai, kuch pucho pehle");
         });
         
-        // Voice input
         let isListening = false;
         let recognition = null;
         if ('webkitSpeechRecognition' in window) {
@@ -721,17 +703,15 @@
             }
         });
         
-        // Load saved messages on start
         loadMessagesFromHistory();
         
-        // Logout functionality
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('snockyUser');
             localStorage.removeItem('snockyChatHistory');
             window.location.reload();
         });
         
-        console.log('🔥 Snocky AI Ultimate — All Features Active!');
+        console.log('🔥 Snocky AI Ultimate — ApkClaw only on Phone Addiction!');
     </script>
 </body>
 </html>
