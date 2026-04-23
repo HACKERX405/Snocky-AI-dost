@@ -177,7 +177,7 @@
             font-weight: 600;
         }
 
-        /* Intro Overlay */
+        /* Intro Overlay - Initially HIDDEN */
         .intro-overlay {
             position: fixed;
             top: 0;
@@ -186,12 +186,10 @@
             height: 100%;
             background: #0a0a0f;
             z-index: 100;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
-            opacity: 1;
             transition: opacity 1s ease;
-            pointer-events: none;
         }
 
         .intro-content {
@@ -515,8 +513,8 @@
         </div>
     </div>
 
-    <!-- Intro Overlay -->
-    <div class="intro-overlay" id="introOverlay">
+    <!-- Intro Overlay - Initially HIDDEN -->
+    <div class="intro-overlay" id="introOverlay" style="display: none;">
         <div class="intro-content">
             <div class="intro-logo">⚡</div>
             <div class="intro-text">WELCOME TO SNOCKY AI</div>
@@ -635,21 +633,17 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // ============ LOGIN SYSTEM ============
+        // ============ LOGIN SYSTEM (FIXED FOR NETLIFY) ============
         const loginContainer = document.getElementById('loginContainer');
         const signupContainer = document.getElementById('signupContainer');
         const mainApp = document.getElementById('mainApp');
         const introOverlay = document.getElementById('introOverlay');
 
-        // Check if user is already logged in
-        if (localStorage.getItem('snockyUser')) {
-            loginContainer.style.display = 'none';
-            signupContainer.style.display = 'none';
-            showIntroAndApp();
-        }
-
         function showIntroAndApp() {
+            // Show intro overlay
             introOverlay.style.display = 'flex';
+            introOverlay.style.opacity = '1';
+            
             setTimeout(() => {
                 introOverlay.style.opacity = '0';
                 setTimeout(() => {
@@ -657,6 +651,15 @@
                     mainApp.classList.add('active');
                 }, 1000);
             }, 2500);
+        }
+
+        // Check if user is already logged in
+        const savedUser = localStorage.getItem('snockyUser');
+        if (savedUser) {
+            loginContainer.style.display = 'none';
+            signupContainer.style.display = 'none';
+            mainApp.classList.add('active');
+            introOverlay.style.display = 'none';
         }
 
         // Toggle between login and signup
@@ -697,8 +700,10 @@
                 loginContainer.style.display = 'none';
                 signupContainer.style.display = 'none';
                 showIntroAndApp();
+            } else if (!storedUser) {
+                alert('No account found! Please sign up first.');
             } else {
-                alert('Invalid credentials! Sign up first.');
+                alert('Invalid credentials! Try again.');
             }
         });
 
@@ -720,6 +725,7 @@
             mainApp.classList.remove('active');
             loginContainer.style.display = 'flex';
             signupContainer.style.display = 'none';
+            introOverlay.style.display = 'none';
         });
 
         // ============ SNOCKY AI CHAT ============
@@ -748,8 +754,10 @@
         }
         
         function addApkSuggestCard() {
+            if (isApkSuggested) return;
             const cardDiv = document.createElement('div');
             cardDiv.className = 'suggest-card';
+            cardDiv.id = 'apkCard';
             cardDiv.innerHTML = `
                 <h4>📱 Snocky Suggests — ApkClaw</h4>
                 <p>Yeh app phone lock karega, distractions hatayega, focus mode dega. Bilkul free hai.</p>
@@ -760,6 +768,7 @@
             document.getElementById('downloadApkBtn')?.addEventListener('click', () => {
                 window.open(APK_URL, '_blank');
             });
+            isApkSuggested = true;
         }
         
         function showTyping() {
@@ -794,10 +803,17 @@
                 micBtnChat.classList.remove('listening');
                 isListening = false;
             };
+            recognition.onerror = () => {
+                micBtnChat.classList.remove('listening');
+                isListening = false;
+            };
         }
         
         micBtnChat.addEventListener('click', () => {
-            if (!recognition) return;
+            if (!recognition) {
+                addMessage('ai', '❌ Voice support nahi. Chrome use kar.');
+                return;
+            }
             if (isListening) {
                 recognition.stop();
                 micBtnChat.classList.remove('listening');
@@ -831,7 +847,7 @@
                 conversationHistory.push({ role: "assistant", content: reply });
                 addMessage('ai', reply);
                 if (isDistraction && !isApkSuggested) {
-                    setTimeout(() => { addApkSuggestCard(); isApkSuggested = true; }, 1000);
+                    setTimeout(() => { addApkSuggestCard(); }, 1000);
                 }
             } catch (error) {
                 hideTyping();
