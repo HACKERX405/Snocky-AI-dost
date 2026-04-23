@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Snocky AI — Firebase Backend</title>
+    <title>Snocky AI — Login</title>
     <style>
         * {
             margin: 0;
@@ -18,6 +18,7 @@
             color: #ededee;
         }
 
+        /* Canvas 3D Background */
         #canvas-container {
             position: fixed;
             top: 0;
@@ -27,8 +28,8 @@
             z-index: 0;
         }
 
-        /* Auth Container */
-        .auth-container {
+        /* Login Page */
+        .login-container {
             position: relative;
             z-index: 20;
             display: flex;
@@ -36,9 +37,10 @@
             justify-content: center;
             min-height: 100vh;
             backdrop-filter: blur(8px);
+            transition: all 0.5s ease;
         }
 
-        .auth-card {
+        .login-card {
             background: rgba(20, 20, 30, 0.85);
             backdrop-filter: blur(20px);
             border-radius: 2rem;
@@ -51,11 +53,17 @@
         }
 
         @keyframes floatIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .auth-card h1 {
+        .login-card h1 {
             font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #ffffff, #a78bfa, #3b82f6);
@@ -66,7 +74,7 @@
             margin-bottom: 0.5rem;
         }
 
-        .auth-card p {
+        .login-card p {
             text-align: center;
             color: #8b8b9e;
             font-size: 0.85rem;
@@ -94,7 +102,7 @@
             box-shadow: 0 0 0 2px rgba(167,139,250,0.2);
         }
 
-        .auth-btn {
+        .login-btn {
             width: 100%;
             background: linear-gradient(135deg, #3b82f6, #a78bfa);
             border: none;
@@ -108,9 +116,31 @@
             transition: all 0.2s;
         }
 
-        .auth-btn:hover {
+        .login-btn:hover {
             transform: scale(0.98);
             opacity: 0.9;
+        }
+
+        .google-btn {
+            width: 100%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 1rem;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+
+        .google-btn:hover {
+            background: rgba(255,255,255,0.15);
         }
 
         .divider {
@@ -147,28 +177,6 @@
             font-weight: 600;
         }
 
-        .google-btn {
-            width: 100%;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 1rem;
-            padding: 0.8rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 0.5rem;
-            transition: all 0.2s;
-        }
-
-        .google-btn:hover {
-            background: rgba(255,255,255,0.15);
-        }
-
         /* Intro Overlay */
         .intro-overlay {
             position: fixed;
@@ -178,10 +186,12 @@
             height: 100%;
             background: #0a0a0f;
             z-index: 100;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
+            opacity: 1;
             transition: opacity 1s ease;
+            pointer-events: none;
         }
 
         .intro-content {
@@ -190,8 +200,14 @@
         }
 
         @keyframes introZoom {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .intro-logo {
@@ -221,7 +237,7 @@
             font-size: 0.9rem;
         }
 
-        /* Main App */
+        /* Main App (hidden initially) */
         .app {
             position: relative;
             z-index: 10;
@@ -252,17 +268,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-name {
-            font-size: 0.8rem;
-            color: #a78bfa;
         }
 
         .logout-btn {
@@ -444,25 +449,6 @@
             30% { transform: translateY(-6px); }
         }
 
-        .error-toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ef4444;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            z-index: 200;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
         @media (min-width: 768px) {
             .header { padding: 1.5rem 2rem; }
             .header h1 { font-size: 1.8rem; }
@@ -474,9 +460,35 @@
 <body>
     <div id="canvas-container"></div>
 
-    <!-- Signup Container -->
-    <div class="auth-container" id="signupContainer">
-        <div class="auth-card">
+    <!-- Login Page -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-card">
+            <h1>⚡ SNOCKY AI</h1>
+            <p>your 3D intelligence companion</p>
+            
+            <div class="input-group">
+                <input type="email" id="loginEmail" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <input type="password" id="loginPassword" placeholder="Password">
+            </div>
+            <button class="login-btn" id="loginBtn">Login</button>
+            
+            <div class="divider">or</div>
+            
+            <button class="google-btn" id="googleLoginBtn">
+                🚀 Continue with Google
+            </button>
+            
+            <div class="toggle-text">
+                Don't have an account? <span id="showSignup">Sign up</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Page (hidden) -->
+    <div class="login-container" id="signupContainer" style="display: none;">
+        <div class="login-card">
             <h1>⚡ SNOCKY AI</h1>
             <p>create your account</p>
             
@@ -489,38 +501,16 @@
             <div class="input-group">
                 <input type="password" id="signupPassword" placeholder="Password">
             </div>
-            <button class="auth-btn" id="signupBtn">SIGN UP</button>
+            <button class="login-btn" id="signupBtn">Sign Up</button>
             
             <div class="divider">or</div>
             
-            <button class="google-btn" id="googleSignupBtn">🚀 Sign up with Google</button>
+            <button class="google-btn" id="googleSignupBtn">
+                🚀 Sign up with Google
+            </button>
             
             <div class="toggle-text">
                 Already have an account? <span id="showLogin">Login</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Container -->
-    <div class="auth-container" id="loginContainer" style="display: none;">
-        <div class="auth-card">
-            <h1>⚡ SNOCKY AI</h1>
-            <p>welcome back</p>
-            
-            <div class="input-group">
-                <input type="email" id="loginEmail" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <input type="password" id="loginPassword" placeholder="Password">
-            </div>
-            <button class="auth-btn" id="loginBtn">LOGIN</button>
-            
-            <div class="divider">or</div>
-            
-            <button class="google-btn" id="googleLoginBtn">🚀 Sign in with Google</button>
-            
-            <div class="toggle-text">
-                Don't have an account? <span id="showSignupToggle">Sign up</span>
             </div>
         </div>
     </div>
@@ -538,15 +528,12 @@
     <div class="app" id="mainApp">
         <div class="header">
             <h1>⚡ SNOCKY AI</h1>
-            <div class="user-info">
-                <span class="user-name" id="userNameDisplay">User</span>
-                <button class="logout-btn" id="logoutBtn">Logout</button>
-            </div>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
         </div>
         <div class="chat-container" id="chatContainer">
             <div class="message ai">
                 <div class="avatar">⚡</div>
-                <div class="bubble">Kya haal hai bhai? Main Snocky. Firebase backend connected hai — tera account secure hai! Jaise tu mujhse baat kar raha hai, waise hi baat kar. Koi problem hai — distraction, focus, phone addiction — bol de. Main help karunga 💪</div>
+                <div class="bubble">Kya haal hai bhai? Main Snocky. Jaise tu mujhse baat kar raha hai, waise hi baat kar. Koi problem hai — distraction, focus, phone addiction — bol de. Main help karunga 💪</div>
             </div>
         </div>
         <div class="input-area">
@@ -558,165 +545,21 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
     <script type="module">
-        // ============ FIREBASE CONFIGURATION ============
-        // 🔥 YAHAN APNI FIREBASE CONFIG PASTE KAR 🔥
-        const firebaseConfig = {
-            apiKey: "AIzaSyD-YourActualKeyHere",  // <-- Yahan apni config paste kar
-            authDomain: "snocky-ai.firebaseapp.com",
-            projectId: "snocky-ai",
-            storageBucket: "snocky-ai.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
-        };
-        
-        // Import Firebase modules
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, updateProfile } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const googleProvider = new GoogleAuthProvider();
-        
-        // DOM Elements
-        const signupContainer = document.getElementById('signupContainer');
-        const loginContainer = document.getElementById('loginContainer');
-        const introOverlay = document.getElementById('introOverlay');
-        const mainApp = document.getElementById('mainApp');
-        const userNameDisplay = document.getElementById('userNameDisplay');
-        
-        function showError(msg) {
-            const toast = document.createElement('div');
-            toast.className = 'error-toast';
-            toast.innerText = msg;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-        
-        function showIntroAndApp(userName) {
-            signupContainer.style.display = 'none';
-            loginContainer.style.display = 'none';
-            userNameDisplay.innerText = userName;
-            introOverlay.style.display = 'flex';
-            setTimeout(() => {
-                introOverlay.style.opacity = '0';
-                setTimeout(() => {
-                    introOverlay.style.display = 'none';
-                    mainApp.classList.add('active');
-                }, 1000);
-            }, 2500);
-        }
-        
-        // Save user to Firestore
-        async function saveUserToFirestore(user, name) {
-            const userRef = doc(db, 'users', user.uid);
-            await setDoc(userRef, {
-                name: name,
-                email: user.email,
-                createdAt: new Date().toISOString()
-            }, { merge: true });
-        }
-        
-        // Signup with Email/Password
-        document.getElementById('signupBtn').addEventListener('click', async () => {
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            
-            if (!name || !email || !password) {
-                showError('Please fill all fields');
-                return;
-            }
-            
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: name });
-                await saveUserToFirestore(userCredential.user, name);
-                showIntroAndApp(name);
-            } catch (error) {
-                if (error.code === 'auth/email-already-in-use') {
-                    showError('Email already exists! Login instead.');
-                } else {
-                    showError(error.message);
-                }
-            }
-        });
-        
-        // Login with Email/Password
-        document.getElementById('loginBtn').addEventListener('click', async () => {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const name = userCredential.user.displayName || email.split('@')[0];
-                showIntroAndApp(name);
-            } catch (error) {
-                if (error.code === 'auth/user-not-found') {
-                    showError('No user found! Sign up first.');
-                } else if (error.code === 'auth/wrong-password') {
-                    showError('Wrong password! Try again.');
-                } else {
-                    showError(error.message);
-                }
-            }
-        });
-        
-        // Google Signup/Login
-        async function googleAuth() {
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                const name = result.user.displayName || result.user.email.split('@')[0];
-                await saveUserToFirestore(result.user, name);
-                showIntroAndApp(name);
-            } catch (error) {
-                showError(error.message);
-            }
-        }
-        
-        document.getElementById('googleSignupBtn').addEventListener('click', googleAuth);
-        document.getElementById('googleLoginBtn').addEventListener('click', googleAuth);
-        
-        // Toggle between signup and login
-        document.getElementById('showLogin').addEventListener('click', () => {
-            signupContainer.style.display = 'none';
-            loginContainer.style.display = 'flex';
-        });
-        
-        document.getElementById('showSignupToggle').addEventListener('click', () => {
-            loginContainer.style.display = 'none';
-            signupContainer.style.display = 'flex';
-        });
-        
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await signOut(auth);
-            mainApp.classList.remove('active');
-            signupContainer.style.display = 'flex';
-            loginContainer.style.display = 'none';
-            introOverlay.style.opacity = '1';
-        });
-        
-        // Check auth state on load
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                const name = user.displayName || user.email.split('@')[0];
-                signupContainer.style.display = 'none';
-                loginContainer.style.display = 'none';
-                mainApp.classList.add('active');
-                userNameDisplay.innerText = name;
-            }
-        });
-        
-        // ============ 3D BACKGROUND (same as before) ============
-        import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
-        import { OrbitControls } from 'https://unpkg.com/three@0.128.0/examples/jsm/controls/OrbitControls.js';
-        
-        const container3d = document.getElementById('canvas-container');
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 3D Background
+        const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0f0f13);
         
@@ -726,7 +569,7 @@
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        container3d.appendChild(renderer.domElement);
+        container.appendChild(renderer.domElement);
         
         const group = new THREE.Group();
         
@@ -791,7 +634,94 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
-        
+
+        // ============ LOGIN SYSTEM ============
+        const loginContainer = document.getElementById('loginContainer');
+        const signupContainer = document.getElementById('signupContainer');
+        const mainApp = document.getElementById('mainApp');
+        const introOverlay = document.getElementById('introOverlay');
+
+        // Check if user is already logged in
+        if (localStorage.getItem('snockyUser')) {
+            loginContainer.style.display = 'none';
+            signupContainer.style.display = 'none';
+            showIntroAndApp();
+        }
+
+        function showIntroAndApp() {
+            introOverlay.style.display = 'flex';
+            setTimeout(() => {
+                introOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    introOverlay.style.display = 'none';
+                    mainApp.classList.add('active');
+                }, 1000);
+            }, 2500);
+        }
+
+        // Toggle between login and signup
+        document.getElementById('showSignup').addEventListener('click', () => {
+            loginContainer.style.display = 'none';
+            signupContainer.style.display = 'flex';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', () => {
+            signupContainer.style.display = 'none';
+            loginContainer.style.display = 'flex';
+        });
+
+        // Signup
+        document.getElementById('signupBtn').addEventListener('click', () => {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (name && email && password) {
+                const user = { name, email, password };
+                localStorage.setItem('snockyUser', JSON.stringify(user));
+                loginContainer.style.display = 'none';
+                signupContainer.style.display = 'none';
+                showIntroAndApp();
+            } else {
+                alert('Please fill all fields');
+            }
+        });
+
+        // Login
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const storedUser = JSON.parse(localStorage.getItem('snockyUser'));
+            if (storedUser && storedUser.email === email && storedUser.password === password) {
+                loginContainer.style.display = 'none';
+                signupContainer.style.display = 'none';
+                showIntroAndApp();
+            } else {
+                alert('Invalid credentials! Sign up first.');
+            }
+        });
+
+        // Google Login (Demo)
+        function googleLogin() {
+            const user = { name: 'Google User', email: 'user@gmail.com', password: 'google' };
+            localStorage.setItem('snockyUser', JSON.stringify(user));
+            loginContainer.style.display = 'none';
+            signupContainer.style.display = 'none';
+            showIntroAndApp();
+        }
+
+        document.getElementById('googleLoginBtn').addEventListener('click', googleLogin);
+        document.getElementById('googleSignupBtn').addEventListener('click', googleLogin);
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('snockyUser');
+            mainApp.classList.remove('active');
+            loginContainer.style.display = 'flex';
+            signupContainer.style.display = 'none';
+        });
+
         // ============ SNOCKY AI CHAT ============
         const GROQ_API_KEY = "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";
         const APK_URL = "https://static.apkclaw.net/apk/ApkClaw_v0.0.1.apk";
@@ -818,10 +748,8 @@
         }
         
         function addApkSuggestCard() {
-            if (document.getElementById('apkSuggestCard')) return;
             const cardDiv = document.createElement('div');
             cardDiv.className = 'suggest-card';
-            cardDiv.id = 'apkSuggestCard';
             cardDiv.innerHTML = `
                 <h4>📱 Snocky Suggests — ApkClaw</h4>
                 <p>Yeh app phone lock karega, distractions hatayega, focus mode dega. Bilkul free hai.</p>
@@ -889,7 +817,7 @@
             conversationHistory.push({ role: "user", content: userMessage });
             showTyping();
             
-            const isDistraction = userMessage.toLowerCase().includes('distraction') || userMessage.toLowerCase().includes('focus') || userMessage.toLowerCase().includes('phone') || userMessage.toLowerCase().includes('lock') || userMessage.toLowerCase().includes('padhai') || userMessage.toLowerCase().includes('study');
+            const isDistraction = userMessage.toLowerCase().includes('distraction') || userMessage.toLowerCase().includes('focus') || userMessage.toLowerCase().includes('phone') || userMessage.toLowerCase().includes('lock') || userMessage.toLowerCase().includes('padhai');
             
             try {
                 const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -913,8 +841,6 @@
         
         sendBtnChat.addEventListener('click', sendMessage);
         textareaChat.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
-        
-        console.log('🔥 Snocky AI with Firebase Backend Ready!');
     </script>
 </body>
 </html>
