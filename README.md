@@ -16,7 +16,7 @@ Snocky AI — 3D Intelligence with Firebase + Groq AI + Voice Control
 
 ## 🚀 Live Demo
 
-(https://snockyaidostpro.netlify.app/)
+(https://hackerx405.github.io/Snocky-AI-dost/)
 ## 🛠️ Tech Stack
 
 - Frontend: HTML5, CSS3, JavaScript
